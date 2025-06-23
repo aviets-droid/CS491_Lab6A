@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        Upload v1.0
+        <p><button id=btnCreate>Create File</button></p>
+        <p><button id=btnUpdate>Update File</button></p>
+        <script>
+            var fileHandle, contents;
+            btnCreate.addEventListener('click',
+                async() => {
+                    fileHandle = await window.showSaveFilePicker();
+                    const file1 = await fileHandle.createWritable();
+                    contents = '{"this":"is a", "JSON":"object"}';
+                    await file1.write(contents);
+                    await file1.close();
+                }
+            );
+            btnUpdate.addEventListener('click',
+                async() => {
+                    [fileHandle] = await window.showOpenFilePicker();
+                    const file = await fileHandle.getFile();
+                    contents = await file.text();
+                    console.log(contents);
+                    contents = (contents.charAt(0)=="d" ? contents.toUpperCase() : contents.toLowerCase());
+                    const file1 = await fileHandle.createWritable();
+                    await file1.write(contents);
+                    await file1.close();
+                }
+            );
+        </script>
+    </body>
+</html>
